@@ -1,5 +1,8 @@
 # BikeTheT
-API which tells you if you can take your bike on the T:
+
+API which tells you if you can take your bike on the T.
+
+## Commuter Rail
 
 ```
 GET /api/commuterRailTrains/{trainNum}
@@ -8,5 +11,34 @@ GET /api/commuterRailTrains/{trainNum}
 {
   "trainNum": "123",
   "bikesAllowed": true
+}
+```
+
+## Subway
+
+```
+GET /api/subwayLines/{green|blue|orange|red|mattapan}?direction={inbound|outbound}&timeOfTravel={YYYY-MM-DDTHH:MM:SS}&isWeekend={true|false|null}
+
+200 OK
+{
+    "color": "red",
+    "direction": "inbound",
+    "isWeekend": null,
+    "timeOfTravel": "2017-09-07T20:01:00",
+    "bikesAllowed": true
+}
+```
+
+The `isWeekend` parameter is optional and allows you to specify whether the travel is occurring on a weekend schedule, even though `timeOfTravel` indicates otherwise. Usually you would use this parameter to indicate holidays that occur on weekdays, when service sometimes operates on a weekend schedule:
+
+```
+GET /api/subwayLines/red?direction=inbound&timeOfTravel=2017-07-04T17:01:00&isWeekend=true
+
+{
+    "color": "red",
+    "direction": "inbound",
+    "isWeekend": true,
+    "timeOfTravel": "2017-07-04T17:01:00",
+    "bikesAllowed": true	
 }
 ```

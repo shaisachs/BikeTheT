@@ -42,7 +42,7 @@ namespace BikeTheT
 
             if ((isWeekend.HasValue && isWeekend.Value) || IsWeekend(timeOfTravel))
             {
-                return CreateResponse(color, direction, timeOfTravel, isWeekend, false);
+                return CreateResponse(color, direction, timeOfTravel, isWeekend, true);
             }
 
             var relevantEmbargoedHours = EmbargoedHours.Where(e => e.Item1.Equals(colorCleaned) && e.Item2.Equals(direction));
