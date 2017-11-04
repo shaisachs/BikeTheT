@@ -1,6 +1,6 @@
 # BikeTheT
 
-API which tells you if you can take your bike on the T.
+An API which tells you if you can take your bike on the T - basically a codification of the [MBTA's bike policies](http://old.mbta.com/riding_the_t/bikes/).
 
 ## Commuter Rail
 
