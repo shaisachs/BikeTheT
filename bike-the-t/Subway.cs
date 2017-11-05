@@ -28,9 +28,23 @@ namespace BikeTheT
             }
         }
 
+        private static RapidApiAuthenticationService _authSvc;
+        private static RapidApiAuthenticationService AuthSvc
+        {
+            get
+            {
+                if (_authSvc == null)
+                {
+                    _authSvc = new RapidApiAuthenticationService();
+                }
+                return _authSvc;
+            }
+        }
+
         [FunctionName("Subway")]
         public static HttpResponseMessage Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "subwayLines/{color}")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "subwayLines/{color}")]
+            HttpRequestMessage req,
             string color,
             TraceWriter log)
         {
@@ -41,6 +55,8 @@ namespace BikeTheT
             // TODO: consolidate with commuter rail?
             // TODO: OpenAPI Spec
             // TODO: functional tests
+
+            AuthSvc.AuthenticateOrInvalidate(req);
 
             var colorCleaned = color.ToLower();
             string directionCleaned = GetRequestParam<string>(req, "direction").ToLower();

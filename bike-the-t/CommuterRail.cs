@@ -26,11 +26,27 @@ namespace BikeTheT
             }
         }
 
+        private static RapidApiAuthenticationService _authSvc;
+        private static RapidApiAuthenticationService AuthSvc
+        {
+            get
+            {
+                if (_authSvc == null)
+                {
+                    _authSvc = new RapidApiAuthenticationService();
+                }
+                return _authSvc;
+            }
+        }
+
         [FunctionName("CommuterRail")]
         public static HttpResponseMessage Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "commuterRailTrains/{trainNum}")]HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "commuterRailTrains/{trainNum}")]
+            HttpRequestMessage req,
             string trainNum, TraceWriter log)
         {
+            AuthSvc.AuthenticateOrInvalidate(req);
+
             var bikesAllowed = BikeTheTSvc.BikesAllowedOnCommuterRailTrain(trainNum);
 
             var answer = new CommuterRailDto() { TrainNum = trainNum, BikesAllowed = bikesAllowed };
