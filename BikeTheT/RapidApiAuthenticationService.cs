@@ -15,24 +15,29 @@ namespace BikeTheT
         private const string RapidApiConfigSetting = "RapidApiSecret";
         private const string RapidApiCustomHeader = "X-Mashape-Proxy-Sec";
 
-        public void AuthenticateOrInvalidate(HttpRequestMessage req)
+        /// <summary>
+        /// Determine if there is an authentication error, and if so return it.
+        /// </summary>
+        /// <param name="req">The incoming request</param>
+        /// <returns>500 status code if no secret is configured
+        /// 401 status code if the consumer provides the wrong credentials
+        /// null if the user provided correct credentials</returns>
+        public HttpResponseMessage GetAuthenticationError(HttpRequestMessage req)
         {
             var secretInRequest = GetRapidApiSecretInRequest(req);
             var correctSecret = GetCorrectRapidApiSecret();
 
             if (string.IsNullOrEmpty(correctSecret))
             {
-                var responseMsg = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                responseMsg.Content = new StringContent("No secret available");
-                throw new HttpResponseException(responseMsg);
+                return req.CreateErrorResponse(HttpStatusCode.InternalServerError, "No secret available");
             }
 
             if (!correctSecret.Equals(secretInRequest))
             {
-                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                return req.CreateErrorResponse(HttpStatusCode.Unauthorized, "Credentials are not valid");
             }
 
-            return;
+            return null;
         }
 
         private string GetRapidApiSecretInRequest(HttpRequestMessage req)
@@ -50,6 +55,7 @@ namespace BikeTheT
 
         private string GetCorrectRapidApiSecret()
         {
+            return string.Empty;
             return ConfigurationSettings.AppSettings.Get(RapidApiConfigSetting);
         }
     }

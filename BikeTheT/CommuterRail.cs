@@ -45,7 +45,11 @@ namespace BikeTheT
             HttpRequestMessage req,
             string trainNum, TraceWriter log)
         {
-            AuthSvc.AuthenticateOrInvalidate(req);
+            var authError = AuthSvc.GetAuthenticationError(req);
+            if (authError != null)
+            {
+                return authError;
+            }
 
             var bikesAllowed = BikeTheTSvc.BikesAllowedOnCommuterRailTrain(trainNum);
 

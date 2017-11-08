@@ -55,8 +55,13 @@ namespace BikeTheT
             // TODO: consolidate with commuter rail?
             // TODO: OpenAPI Spec
             // TODO: functional tests
+            // move auth error into functional tests
 
-            AuthSvc.AuthenticateOrInvalidate(req);
+            var authError = AuthSvc.GetAuthenticationError(req);
+            if (authError != null)
+            {
+                return authError;
+            }
 
             var colorCleaned = color.ToLower();
             string directionCleaned = GetRequestParam<string>(req, "direction").ToLower();
