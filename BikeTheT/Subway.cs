@@ -43,13 +43,12 @@ namespace BikeTheT
 
         [FunctionName("Subway")]
         public static HttpResponseMessage Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "subwayLines/{color}")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/subwayLines/{color}")]
             HttpRequestMessage req,
             string color,
             TraceWriter log)
         {
             // TODO: validate input
-            // TODO: move logic into service
             // TODO: move serialization into service
             // TODO: enum for colors
             // TODO: consolidate with commuter rail?
