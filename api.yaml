@@ -1,0 +1,112 @@
+swagger: '2.0'
+info:
+  title: bikethet.azurewebsites.net
+  version: 1.0.0
+host: bikethet.azurewebsites.net
+basePath: /
+schemes:
+  - https
+paths:
+  '/api/v1/commuterRailTrains/{trainNum}':
+    get:
+      operationId: getCommuterRailTrainPolicy
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: trainNum
+          in: path
+          required: true
+          type: string
+      description: Determines whether bikes are allowed on the specified train.
+      responses:
+        '200':
+          description: Bike policy for the specified train.
+          schema:
+            type: object
+            properties:
+              trainNum:
+                type: string
+                description: The train number from the query
+              bikesAllowed:
+                type: boolean
+                description: 'true if bikes are allowed on this train, false otherwise'
+      security:
+        - apikeyHeader: []
+  '/api/v1/subwayLines/{color}':
+    get:
+      operationId: getSubwayLinePolicy
+      description: >-
+        Determines whether bikes are allowed on the specified subway line, given
+        the direction of travel and time of travel.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: color
+          description: Identifies the subway line for travel
+          in: path
+          required: true
+          type: string
+          enum:
+            - green
+            - blue
+            - orange
+            - red
+            - mattapan
+        - name: direction
+          description: Whether travel is inbound or outbound
+          in: query
+          required: true
+          type: string
+          enum:
+            - inbound
+            - outbound
+        - name: timeOfTravel
+          description: >-
+            The time of travel, formatted as "YYYY-MM-DD HH:MM:SS". Eastern time
+            is assumed.
+          in: query
+          required: true
+          type: string
+        - name: isWeekend
+          description: >-
+            Indicates that a weekend schedule applies, even though the time of
+            travel falls during the week; e.g., set to "true" during holidays.
+            Default is "false".
+          in: query
+          required: false
+          type: boolean
+      responses:
+        '200':
+          description: Bike policy for the specified subway trip.
+          schema:
+            type: object
+            properties:
+              color:
+                type: string
+                description: The subway line
+              direction:
+                type: string
+                description: The direction of travel.
+              timeOfTravel:
+                type: string
+                description: The time when the subway trip occurs.
+              isWeekend:
+                type: boolean
+                description: >-
+                  Whether a weekend schedule applies for this trip, despite the
+                  fact that timeOfTravel occurs on a weekday.
+              bikesAllowed:
+                type: boolean
+                description: 'true if bikes are allowed on this train, false otherwise.'
+      security:
+        - apikeyHeader: []
+definitions: {}
+securityDefinitions:
+  apikeyHeader:
+    type: apiKey
+    in: header
+    name: X-Mashape-Proxy-Sec
