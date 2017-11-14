@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Configuration;
+using Microsoft.Azure.WebJobs.Host;
 
 namespace BikeTheT
 {
     public class RapidApiAuthenticationService
     {
         private const string RapidApiConfigSetting = "RapidApiSecret";
-        private const string RapidApiCustomHeader = "X-Mashape-Proxy-Sec";
+        private const string RapidApiCustomHeader = "X-Mashape-Proxy-Secret";
 
         /// <summary>
         /// Determine if there is an authentication error, and if so return it.
@@ -55,6 +56,7 @@ namespace BikeTheT
 
         private string GetCorrectRapidApiSecret()
         {
+            return "1234";
             return ConfigurationManager.AppSettings.Get(RapidApiConfigSetting);
         }
     }
