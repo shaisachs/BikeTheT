@@ -41,7 +41,7 @@ namespace BikeTheT
 
         [FunctionName("CommuterRail")]
         public static HttpResponseMessage Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/commuterRailTrains/{trainNum}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/commuterRailTrains/{trainNum}")]
             HttpRequestMessage req,
             string trainNum, TraceWriter log)
         {

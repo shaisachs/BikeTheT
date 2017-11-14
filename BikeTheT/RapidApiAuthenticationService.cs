@@ -56,7 +56,6 @@ namespace BikeTheT
 
         private string GetCorrectRapidApiSecret()
         {
-            return "1234";
             return ConfigurationManager.AppSettings.Get(RapidApiConfigSetting);
         }
     }

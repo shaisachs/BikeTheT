@@ -43,7 +43,7 @@ namespace BikeTheT
 
         [FunctionName("Subway")]
         public static HttpResponseMessage Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/subwayLines/{color}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/subwayLines/{color}")]
             HttpRequestMessage req,
             string color,
             TraceWriter log)
